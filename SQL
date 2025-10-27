@@ -1,0 +1,35 @@
+
+SELECT
+    Date,
+    Sales,
+    `Quantity Sold`,
+    `Cost of Sales`,
+    ROUND(
+        TRY_CAST(REPLACE(Sales, ',', '.') AS DOUBLE)
+        / TRY_CAST(REPLACE(`Quantity Sold`, ',', '.') AS DOUBLE),
+        2
+    ) AS Daily_Sales_Price_Per_Unit,
+    ROUND(
+        (
+            TRY_CAST(REPLACE(Sales, ',', '.') AS DOUBLE)
+            - TRY_CAST(REPLACE(`Cost of Sales`, ',', '.') AS DOUBLE)
+        )
+        / TRY_CAST(REPLACE(Sales, ',', '.') AS DOUBLE) * 100,
+        2
+    ) AS Daily_Gross_Profit_Percentage,
+    ROUND(
+        (
+            (
+                TRY_CAST(REPLACE(Sales, ',', '.') AS DOUBLE)
+                - TRY_CAST(REPLACE(`Cost of Sales`, ',', '.') AS DOUBLE)
+            )
+            / TRY_CAST(REPLACE(`Quantity Sold`, ',', '.') AS DOUBLE)
+        )
+        / (
+            TRY_CAST(REPLACE(Sales, ',', '.') AS DOUBLE)
+            / TRY_CAST(REPLACE(`Quantity Sold`, ',', '.') AS DOUBLE)
+        ) * 100,
+        2
+    ) AS Daily_Gross_Profit_Percentage_Per_Unit
+FROM
+    sales_case_study
